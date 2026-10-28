@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática de CAD e Projeto Mecânico | SENAI SC 2026</title>
+    <style>
+        :root {
+            --senai-blue: #0047B6;
+            --senai-dark-blue: #002B70;
+            --senai-orange: #FF5000;
+            --senai-orange-hover: #D94300;
+            --senai-light: #F4F6F9;
+            --senai-border: #D9E2EC;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --white: #FFFFFF;
+            --success: #10B981;
+            --warning: #F59E0B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--senai-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* BARRA LATERAL ESTILO APRESENTAÇÃO SENAI 2026 */
+        .senai-stripe-top {
+            height: 8px;
+            background: linear-gradient(90deg, var(--senai-orange) 0%, var(--senai-orange) 28%, var(--white) 28%, var(--white) 32%, var(--senai-blue) 32%, var(--senai-blue) 100%);
+        }
+
+        /* CABEÇALHO INSTITUCIONAL SENAI / FIESC */
+        header {
+            background: linear-gradient(135deg, var(--senai-dark-blue) 0%, var(--senai-blue) 100%);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 43, 112, 0.25);
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -60px;
+            width: 240px;
+            height: 220%;
+            background: linear-gradient(180deg, var(--senai-orange) 0%, var(--senai-orange) 38%, var(--white) 38%, var(--white) 46%, rgba(255,255,255,0.12) 46%);
+            transform: rotate(25deg);
+            pointer-events: none;
+        }
+
+        .header-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .senai-logo-box {
+            background: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .senai-logo-text {
+            font-size: 1.9rem;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: -1px;
+            color: var(--senai-blue);
+            position: relative;
+            line-height: 1;
+        }
+
+        .senai-logo-text span {
+            color: var(--senai-orange);
+        }
+
+        .fiesc-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--senai-dark-blue);
+            border-left: 2px solid var(--senai-border);
+            padding-left: 0.65rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .header-titles h1 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .header-titles p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .student-status-bar {
+            display: none;
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .student-status-bar strong {
+            color: #FFD166;
+        }
+
+        /* CONTAINER PRINCIPAL */
+        main {
+            max-width: 1240px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        /* TELA 1: IDENTIFICAÇÃO DO ALUNO */
+        #login-screen {
+            max-width: 650px;
+            margin: 2rem auto;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 71, 182, 0.1);
+            overflow: hidden;
+            border-top: 6px solid var(--senai-orange);
+        }
+
+        .card-header {
+            background: var(--senai-blue);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            position: relative;
+        }
+
+        .card-header h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.35rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--senai-dark-blue);
+            margin-bottom: 0.45rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid var(--senai-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--senai-blue);
+            box-shadow: 0 0 0 3px rgba(0, 71, 182, 0.15);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--senai-orange);
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1.05rem;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--senai-orange-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-blue {
+            background: var(--senai-blue);
+        }
+
+        .btn-blue:hover {
+            background: var(--senai-dark-blue);
+        }
+
+        /* TELA 2: AMBIENTE DA AVALIAÇÃO */
+        #exam-screen {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0, 43, 112, 0.07);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border-left: 6px solid var(--senai-blue);
+        }
+
+        .section-card.orange-accent {
+            border-left-color: var(--senai-orange);
+        }
+
+        .section-title-bar {
+            padding: 1.25rem 1.75rem;
+            background: #F8FAFC;
+            border-bottom: 1px solid var(--senai-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-title-bar h2 {
+            color: var(--senai-dark-blue);
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .badge {
+            background: var(--senai-blue);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.7rem;
+            border-radius: 50px;
+            text-transform: uppercase;
+        }
+
+        .badge.orange {
+            background: var(--senai-orange);
+        }
+
+        .section-content {
+            padding: 1.75rem;
+        }
+
+        /* TAXONOMIA DE BLOOM */
+        .bloom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+
+        .bloom-card {
+            background: #F8FAFC;
+            border: 1px solid var(--senai-border);
+            border-top: 4px solid var(--senai-blue);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .bloom-card:nth-child(even) {
+            border-top-color: var(--senai-orange);
+        }
+
+        .bloom-level {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--senai-orange);
+            margin-bottom: 0.3rem;
+        }
+
+        .bloom-verbs {
+            font-weight: 800;
+            color: var(--senai-dark-blue);
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .bloom-desc {
+            font-size: 0.86rem;
+            color: var(--text-dark);
+        }
+
+        /* DRIVE DOWNLOAD BOX */
+        .drive-callout {
+            background: linear-gradient(135deg, #EEF4FF 0%, #E0EAFF 100%);
+            border: 2px solid var(--senai-blue);
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .drive-instructions {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .drive-instructions h3 {
+            color: var(--senai-dark-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+        }
+
+        .drive-instructions ol {
+            padding-left: 1.25rem;
+            font-size: 0.92rem;
+        }
+
+        .drive-instructions li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* PAINEL DE DESENHOS TÉCNICOS */
+        .drawings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 1.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .drawings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .drawing-box {
+            border: 2px solid var(--senai-border);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawing-header {
+            background: var(--senai-dark-blue);
+            color: var(--white);
+            padding: 0.85rem 1.2rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .drawing-viewport {
+            padding: 1rem;
+            background: #EFF6FF;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 360px;
+            position: relative;
+        }
+
+        .drawing-viewport img {
+            max-width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+            border-radius: 6px;
+            cursor: zoom-in;
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+        }
+
+        .drawing-viewport img:hover {
+            transform: scale(1.02);
+        }
+
+        .drawing-specs {
+            padding: 1rem 1.25rem;
+            background: #F8FAFC;
+            border-top: 1px solid var(--senai-border);
+            font-size: 0.88rem;
+        }
+
+        .drawing-specs ul {
+            padding-left: 1.2rem;
+            margin-top: 0.4rem;
+        }
+
+        /* TABELA DE 10 CRITÉRIOS */
+        .criteria-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+
+        .criteria-table th {
+            background: var(--senai-dark-blue);
+            color: var(--white);
+            text-align: left;
+            padding: 0.9rem 1rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .criteria-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--senai-border);
+            vertical-align: middle;
+        }
+
+        .criteria-table tr:nth-child(even) {
+            background: #F8FAFC;
+        }
+
+        .criteria-table tr:hover {
+            background: #EEF4FF;
+        }
+
+        .cat-pill {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .cat-model { background: #DBEAFE; color: #1E40AF; }
+        .cat-cota { background: #FFEDD5; color: #C2410C; }
+        .cat-mont { background: #D1FAE5; color: #065F46; }
+
+        /* ÁREA DE UPLOAD */
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-card {
+            border: 2px dashed var(--senai-blue);
+            background: #F8FAFC;
+            border-radius: 10px;
+            padding: 1.5rem 1.2rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .upload-card:hover {
+            background: #EEF4FF;
+            border-color: var(--senai-orange);
+        }
+
+        .upload-card.file-selected {
+            border-style: solid;
+            border-color: var(--success);
+            background: #ECFDF5;
+        }
+
+        .upload-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .upload-card h4 {
+            color: var(--senai-dark-blue);
+            margin-bottom: 0.35rem;
+            font-size: 1rem;
+        }
+
+        .upload-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            width: 100%;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .file-status {
+            margin-top: 0.6rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--success);
+            word-break: break-all;
+        }
+
+        .email-info-banner {
+            background: #FFF7ED;
+            border-left: 4px solid var(--senai-orange);
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* MODAL DE ZOOM */
+        #image-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 20, 50, 0.88);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        #image-modal img {
+            max-width: 92vw;
+            max-height: 88vh;
+            border-radius: 8px;
+            background: var(--white);
+            padding: 0.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            color: var(--white);
+            font-size: 2.2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* RODAPÉ PADRÃO SENAI 2026 */
+        footer {
+            background: var(--senai-dark-blue);
+            color: var(--white);
+            padding: 2rem 1.5rem;
+            margin-top: 3rem;
+            border-top: 5px solid var(--senai-orange);
+        }
+
+        .footer-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        .footer-info p {
+            margin-bottom: 0.25rem;
+            opacity: 0.9;
+        }
+
+        .author-signature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.65rem 1.2rem;
+            border-radius: 6px;
+            border-left: 3px solid var(--senai-orange);
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="senai-stripe-top"></div>
+
+    <!-- CABEÇALHO INSTITUCIONAL SENAI 2026 -->
+    <header>
+        <div class="header-container">
+            <div class="brand-group">
+                <div class="senai-logo-box">
+                    <div class="senai-logo-text">SENA<span>I</span></div>
+                    <div class="fiesc-tag">FIESC<br>Santa Catarina</div>
+                </div>
+                <div class="header-titles">
+                    <h1>Avaliação Prática de Desenho e Modelamento Mecânico</h1>
+                    <p>Conjunto de Montar Anéis — Modelagem 3D, Detalhamento em Folha A4 e Montagem</p>
+                </div>
+            </div>
+
+            <div class="student-status-bar" id="student-badge">
+                <div>👤 Aluno(a): <strong id="badge-nome">-</strong> | Turma: <strong id="badge-turma">-</strong></div>
+                <div>📧 Cópia de confirmação: <strong id="badge-email">-</strong> | ⏱️ Tempo: <strong id="exam-timer">00:00:00</strong></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ETAPA 1: IDENTIFICAÇÃO DO ESTUDANTE -->
+        <section id="login-screen">
+            <div class="card-header">
+                <h2>Identificação do Estudante</h2>
+                <p>Preencha seus dados abaixo para desbloquear o caderno de avaliação e os arquivos do desafio.</p>
+            </div>
+            <div class="card-body">
+                <form id="start-exam-form" onsubmit="iniciarProva(event)">
+                    <div class="form-group">
+                        <label for="aluno_nome">Nome Completo do Aluno *</label>
+                        <input type="text" id="aluno_nome" class="form-control" placeholder="Ex.: João da Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="aluno_turma">Turma / Curso *</label>
+                        <input type="text" id="aluno_turma" class="form-control" placeholder="Ex.: TMEC-2026 / Aprendizagem Industrial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="aluno_email">E-mail do Aluno (para receber o comprovante e cópia dos arquivos) *</label>
+                        <input type="email" id="aluno_email" class="form-control" placeholder="seu.email@aluno.sc.senai.br" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <span>🚀 INICIAR AVALIAÇÃO PRÁTICA</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ETAPA 2: CONTEÚDO DA PROVA (DESBLOQUEADO APÓS LOGIN) -->
+        <div id="exam-screen">
+
+            <!-- SEÇÃO 1: CONTEXTUALIZAÇÃO COM TAXONOMIA DE BLOOM -->
+            <section class="section-card">
+                <div class="section-title-bar">
+                    <h2>📌 1. Contextualização e Diretrizes Cognitivas</h2>
+                    <span class="badge">Taxonomia de Bloom</span>
+                </div>
+                <div class="section-content">
+                    <p>
+                        No setor de projetos e manutenção industrial, a reposição de componentes de precisão e a validação de conjuntos mecânicos exigem leitura rigorosa de desenhos técnicos e domínio de sistemas CAD. Você foi designado pelo setor de Engenharia Mecânica para finalizar o projeto do <strong>Conjunto de Montar Anéis</strong>. Para concluir a ordem de serviço com êxito, você deverá percorrer as seguintes etapas estruturadas:
+                    </p>
+
+                    <div class="bloom-grid">
+                        <div class="bloom-card">
+                            <div class="bloom-level">1. Compreender e Interpretar</div>
+                            <div class="bloom-verbs">Interpretar • Identificar</div>
+                            <div class="bloom-desc">
+                                <strong>Interpretar</strong> a vista em corte da <strong>Bucha (Peça 2)</strong>, <strong>identificando</strong> suas cotas milimétricas (Ø24, Ø18, 16, 12 e 4 mm), o furo em polegada (Ø3/8") e os sinais de acabamento superficial (∇∇).
+                            </div>
+                        </div>
+                        <div class="bloom-card">
+                            <div class="bloom-level">2. Aplicar e Executar</div>
+                            <div class="bloom-verbs">Modelar • Converter</div>
+                            <div class="bloom-desc">
+                                <strong>Converter</strong> a dimensão em polegada fracionária para o sistema métrico (Ø3/8" = 9,525 mm) e <strong>modelar</strong> tridimensionalmente a Bucha no software CAD 3D com precisão geométrica.
+                            </div>
+                        </div>
+                        <div class="bloom-card">
+                            <div class="bloom-level">3. Analisar e Relacionar</div>
+                            <div class="bloom-verbs">Analisar • Correlacionar</div>
+                            <div class="bloom-desc">
+                                <strong>Analisar</strong> as peças disponibilizadas na pasta do Google Drive e <strong>correlacionar</strong> suas restrições de montagem (concentricidade, coincidência de faces, pino guia e elementos soldados).
+                            </div>
+                        </div>
+                        <div class="bloom-card">
+                            <div class="bloom-level">4. Avaliar e Criar</div>
+                            <div class="bloom-verbs">Elaborar • Integrar • Validar</div>
+                            <div class="bloom-desc">
+                                <strong>Elaborar</strong> o detalhamento técnico da Bucha em <strong>folha A4</strong> segundo as normas ABNT, <strong>integrar</strong> todas as peças na montagem do conjunto e <strong>validar</strong> o funcionamento sem interferências.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 2: ACESSO AOS ARQUIVOS NO GOOGLE DRIVE -->
+            <section class="section-card orange-accent">
+                <div class="section-title-bar">
+                    <h2>📂 2. Repositório de Peças do Conjunto (Google Drive)</h2>
+                    <span class="badge orange">Download Obrigatório</span>
+                </div>
+                <div class="section-content">
+                    <div class="drive-callout">
+                        <div class="drive-instructions">
+                            <h3>Instruções para Download das Peças Base:</h3>
+                            <ol>
+                                <li>Clique no botão <strong>"Acessar Pasta no Google Drive"</strong> ao lado (a pasta será aberta em uma nova guia).</li>
+                                <li>Faça o download de todos os arquivos das peças que compõem o <strong>Conjunto de Montar Anéis</strong> (Corpo/Base, Eixo com elementos soldados, Pino, Arruela e Porca).</li>
+                                <li>Salve os arquivos em uma pasta local de trabalho no seu computador junto com a <strong>Bucha (Peça 2)</strong> que você irá modelar.</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <a href="https://drive.google.com/drive/folders/196RTMZfnMIzCIXTk1yF5OpQJRDAd4rmj?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-primary btn-blue">
+                                📥 ACESSAR PASTA NO GOOGLE DRIVE
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 3: DESENHOS TÉCNICOS DE REFERÊNCIA (BUCHA E MONTAGEM) -->
+            <section class="section-card">
+                <div class="section-title-bar">
+                    <h2>📐 3. Especificações Técnicas: Desenho da Bucha e Vista de Montagem</h2>
+                    <span class="badge">Clique nas imagens para ampliar</span>
+                </div>
+                <div class="section-content">
+                    <div class="drawings-grid">
+                        
+                        <!-- CARD DESENHO DA BUCHA -->
+                        <div class="drawing-box">
+                            <div class="drawing-header">
+                                <span>PEÇA 2 — DESENHO TÉCNICO DA BUCHA</span>
+                                <span>Detalhar em Folha A4</span>
+                            </div>
+                            <div class="drawing-viewport">
+                                <img src="DESENHO BUCHA.jpg" alt="Desenho Técnico da Bucha - Peça 2" onclick="abrirZoom(this.src)" onerror="this.style.display='none'; document.getElementById('fallback-bucha').style.display='block';">
+                                
+                                <!-- Fallback vetorial caso a imagem não esteja no mesmo diretório -->
+                                <div id="fallback-bucha" style="display:none; width:100%;">
+                                    <svg viewBox="0 0 420 310" style="max-width:360px; background:#fff; border-radius:6px; padding:10px;">
+                                        <circle cx="65" cy="60" r="24" fill="none" stroke="#000" stroke-width="2.5"/>
+                                        <text x="65" y="69" text-anchor="middle" font-size="26" font-weight="bold">2</text>
+                                        <!-- Cotas Superiores -->
+                                        <line x1="150" y1="65" x2="290" y2="65" stroke="#000" stroke-width="1.5"/>
+                                        <text x="220" y="57" text-anchor="middle" font-size="20" font-weight="bold">Ø 24</text>
+                                        <line x1="190" y1="105" x2="250" y2="105" stroke="#000" stroke-width="1.5"/>
+                                        <text x="225" y="97" text-anchor="middle" font-size="18" font-weight="bold">Ø 3/8"</text>
+                                        <!-- Corpo em Corte da Bucha -->
+                                        <polygon points="150,140 190,140 190,245 165,245 165,165 150,165" fill="#e2e8f0" stroke="#000" stroke-width="2.5"/>
+                                        <polygon points="250,140 290,140 290,165 275,165 275,245 250,245" fill="#e2e8f0" stroke="#000" stroke-width="2.5"/>
+                                        <line x1="190" y1="140" x2="250" y2="140" stroke="#000" stroke-width="2.5"/>
+                                        <line x1="165" y1="245" x2="275" y2="245" stroke="#000" stroke-width="2.5"/>
+                                        <line x1="220" y1="125" x2="220" y2="260" stroke="#000" stroke-width="1.5" stroke-dasharray="18,5,4,5"/>
+                                        <!-- Cotas Laterais e Inferiores -->
+                                        <text x="100" y="200" text-anchor="middle" font-size="18" font-weight="bold" transform="rotate(-90 100,200)">16</text>
+                                        <text x="130" y="210" text-anchor="middle" font-size="18" font-weight="bold" transform="rotate(-90 130,210)">12</text>
+                                        <text x="130" y="135" text-anchor="middle" font-size="18" font-weight="bold">4</text>
+                                        <text x="220" y="280" text-anchor="middle" font-size="20" font-weight="bold">Ø 18</text>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="drawing-specs">
+                                <strong>Tarefas Obrigatórias para a Bucha (Peça 2):</strong>
+                                <ul>
+                                    <li>Modelar a peça 3D respeitando: <strong>Ø24 mm</strong> (aba), <strong>Ø18 mm</strong> (corpo), <strong>Ø3/8"</strong> (furo passante), altura total de <strong>16 mm</strong> (corpo de <strong>12 mm</strong> + aba de <strong>4 mm</strong>).</li>
+                                    <li>Gerar a folha de detalhamento técnico em formato <strong>A4</strong> com vista em corte, cotagem completa e símbolos de rugosidade/acabamento (∇∇).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- CARD MONTAGEM DO CONJUNTO -->
+                        <div class="drawing-box">
+                            <div class="drawing-header">
+                                <span>VISTA EXPLODIDA — CONJUNTO DE MONTAR ANÉIS</span>
+                                <span>Montagem 3D Completa</span>
+                            </div>
+                            <div class="drawing-viewport">
+                                <img src="MONTAGEM.jpg" alt="Vista Explodida de Montagem do Conjunto" onclick="abrirZoom(this.src)">
+                            </div>
+                            <div class="drawing-specs">
+                                <strong>Tarefas Obrigatórias para a Montagem:</strong>
+                                <ul>
+                                    <li>Inserir o corpo base em corte parcial/total como componente fixo de referência.</li>
+                                    <li>Montar a <strong>Bucha (Peça 2)</strong> no alojamento cilíndrico superior da base.</li>
+                                    <li>Posicionar o subconjunto de <strong>Elementos Soldados</strong> alinhado ao furo central e ao pino guia inferior, finalizando a fixação com a arruela e a porca sextavada.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 4: OS 10 CRITÉRIOS DE AVALIAÇÃO DO PROFESSOR -->
+            <section class="section-card">
+                <div class="section-title-bar">
+                    <h2>✅ 4. Matriz de Critérios de Avaliação (10 Critérios)</h2>
+                    <span class="badge">Pontuação Total: 10,0 Pontos</span>
+                </div>
+                <div class="section-content">
+                    <p style="margin-bottom: 1rem;">
+                        Utilize a coluna de verificação abaixo como <em>checklist</em> antes de realizar o envio definitivo dos seus arquivos. O professor avaliará sua entrega com base nestes <strong>10 critérios técnicos</strong>:
+                    </p>
+                    <div style="overflow-x: auto;">
+                        <table class="criteria-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Categoria</th>
+                                    <th>Critério Técnico Avaliado</th>
+                                    <th>Peso</th>
+                                    <th>Autoavaliação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>01</strong></td>
+                                    <td><span class="cat-pill cat-model">Modelamento da Peça</span></td>
+                                    <td><strong>Geometria 3D da Bucha:</strong> Modelamento sólido da Peça 2 com perfil cilíndrico escalonado e simetria axial correta.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>02</strong></td>
+                                    <td><span class="cat-pill cat-model">Modelamento da Peça</span></td>
+                                    <td><strong>Exatidão Dimensional Externa:</strong> Diâmetro da aba (Ø24 mm), diâmetro do corpo (Ø18 mm), altura total (16 mm), corpo (12 mm) e aba (4 mm).</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>03</strong></td>
+                                    <td><span class="cat-pill cat-model">Modelamento da Peça</span></td>
+                                    <td><strong>Furo Passante em Polegada:</strong> Execução exata do furo central de Ø3/8" (9,525 mm) concêntrico à peça.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>04</strong></td>
+                                    <td><span class="cat-pill cat-cota">Cotagem da Peça (A4)</span></td>
+                                    <td><strong>Folha Padrão A4 e Legenda ABNT:</strong> Uso correto do template A4, escala compatível e preenchimento técnico da legenda.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>05</strong></td>
+                                    <td><span class="cat-pill cat-cota">Cotagem da Peça (A4)</span></td>
+                                    <td><strong>Representação em Corte e Simetria:</strong> Aplicação correta da vista em corte com hachuras normalizadas e linha de centro.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>06</strong></td>
+                                    <td><span class="cat-pill cat-cota">Cotagem da Peça (A4)</span></td>
+                                    <td><strong>Cotagem Funcional Completa:</strong> Presença de todas as cotas necessárias (Ø24, Ø18, Ø3/8", 16, 12 e 4) posicionadas sem cruzamentos indevidos.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>07</strong></td>
+                                    <td><span class="cat-pill cat-cota">Cotagem da Peça (A4)</span></td>
+                                    <td><strong>Simbologia de Acabamento Superficial:</strong> Indicação correta dos símbolos de acabamento (∇∇) nas superfícies especificadas no projeto.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>08</strong></td>
+                                    <td><span class="cat-pill cat-mont">Montagem do Conjunto</span></td>
+                                    <td><strong>Inserção da Bucha no Suporte:</strong> Restrições corretas de concentricidade e face entre a Bucha desenhada e o furo superior da base.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>09</strong></td>
+                                    <td><span class="cat-pill cat-mont">Montagem do Conjunto</span></td>
+                                    <td><strong>Alinhamento dos Elementos Soldados e Pino:</strong> Posicionamento axial correto do eixo soldado no corpo principal e alinhamento com o pino guia.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>10</strong></td>
+                                    <td><span class="cat-pill cat-mont">Montagem do Conjunto</span></td>
+                                    <td><strong>Fixação Final (Arruela e Porca) e Integridade:</strong> Montagem completa de todos os itens sem interferência física entre sólidos.</td>
+                                    <td><strong>1,0 pt</strong></td>
+                                    <td><input type="checkbox"> Conferido</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 5: UPLOAD E ENVIO POR E-MAIL -->
+            <section class="section-card orange-accent">
+                <div class="section-title-bar">
+                    <h2>📤 5. Entrega dos Arquivos da Avaliação</h2>
+                    <span class="badge orange">Envio Automático com Cópia</span>
+                </div>
+                <div class="section-content">
+                    <div class="email-info-banner">
+                        <strong>📌 Destinatários do Envio:</strong> Ao clicar em <em>"Finalizar e Enviar Avaliação"</em>, seus arquivos serão encaminhados como anexo diretamente para o professor (<strong>marcelo.ozorio@edu.sc.senai.br</strong>) com cópia automática (CC) para o seu e-mail informado no início da prova (<strong id="confirm-student-email">-</strong>).
+                    </div>
+
+                    <form id="submission-form" action="https://formsubmit.co/marcelo.ozorio@edu.sc.senai.br" method="POST" enctype="multipart/form-data" onsubmit="validarEnvioFinal(event)">
+                        
+                        <!-- Campos ocultos de configuração do envio -->
+                        <input type="hidden" name="_subject" id="hidden_subject" value="Avaliação CAD SENAI - Conjunto de Montar Anéis">
+                        <input type="hidden" name="_cc" id="hidden_cc" value="">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+
+                        <!-- Dados do aluno vinculados ao envio -->
+                        <input type="hidden" name="Nome_do_Aluno" id="hidden_nome" value="">
+                        <input type="hidden" name="Turma" id="hidden_turma" value="">
+                        <input type="hidden" name="Email_do_Aluno" id="hidden_email" value="">
+                        <input type="hidden" name="Horario_Inicio" id="hidden_inicio" value="">
+                        <input type="hidden" name="Tempo_Decorrido" id="hidden_tempo" value="">
+
+                        <div class="upload-grid">
+                            <!-- Upload 1: Peças Individuais / Bucha -->
+                            <div class="upload-card" id="card-up-1">
+                                <span class="upload-icon">⚙️</span>
+                                <h4>1. Peça Modelada (Bucha) e Peças Individuais</h4>
+                                <p>Anexe o arquivo 3D da Bucha ou pacote ZIP das peças (.sldprt, .ipt, .step, .zip)</p>
+                                <input type="file" name="1_Peca_Bucha_e_Individuais" id="file_pecas" class="file-input" required onchange="atualizarCardUpload(this, 'card-up-1', 'status-up-1')">
+                                <div class="file-status" id="status-up-1"></div>
+                            </div>
+
+                            <!-- Upload 2: Folha de Desenho A4 -->
+                            <div class="upload-card" id="card-up-2">
+                                <span class="upload-icon">📄</span>
+                                <h4>2. Detalhamento da Bucha em Folha A4</h4>
+                                <p>Anexe a folha de desenho A4 detalhada e cotada (.pdf, .slddrw, .idw, .dwg)</p>
+                                <input type="file" name="2_Folha_Desenho_A4_Bucha" id="file_desenho" class="file-input" required onchange="atualizarCardUpload(this, 'card-up-2', 'status-up-2')">
+                                <div class="file-status" id="status-up-2"></div>
+                            </div>
+
+                            <!-- Upload 3: Montagem Realizada -->
+                            <div class="upload-card" id="card-up-3">
+                                <span class="upload-icon">🧩</span>
+                                <h4>3. Montagem do Conjunto de Montar Anéis</h4>
+                                <p>Anexe a montagem final realizada (.sldasm, .iam, .step, .zip / Pack and Go)</p>
+                                <input type="file" name="3_Montagem_Conjunto_Aneis" id="file_montagem" class="file-input" required onchange="atualizarCardUpload(this, 'card-up-3', 'status-up-3')">
+                                <div class="file-status" id="status-up-3"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="observacoes_aluno">Observações Técnicas do Aluno (Opcional):</label>
+                            <textarea name="Observacoes_Tecnicas" id="observacoes_aluno" rows="3" class="form-control" placeholder="Caso deseje, registre observações sobre o software utilizado, tolerâncias ou detalhes da montagem..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btn-submit-final">
+                            <span>📨 FINALIZAR E ENVIAR AVALIAÇÃO PARA O PROFESSOR E MEU E-MAIL</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- MODAL DE AMPLIAÇÃO DAS IMAGENS -->
+    <div id="image-modal" onclick="fecharZoom()">
+        <span class="close-modal">&times;</span>
+        <img id="modal-img" src="" alt="Visualização Ampliada">
+    </div>
+
+    <!-- RODAPÉ INSTITUCIONAL SENAI / FIESC 2026 -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <p><strong>SENAI — Serviço Nacional de Aprendizagem Industrial | FIESC</strong></p>
+                <p>Rodovia Admar Gonzaga, 2765 | Itacorubi | 88034-001 | Florianópolis - SC</p>
+                <p>sc.senai.br | faleconosco@fiesc.com.br | (48) 3231 4100 | 0800 048 1212</p>
+            </div>
+            <div class="author-signature">
+                Desenvolvido por Msc. Marcelo Cevey<br>
+                <span style="font-size: 0.78rem; font-weight: 400; opacity: 0.9;">Prof. Me. Marcelo Ozorio Cevey — marcelo.ozorio@edu.sc.senai.br</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let segundosDecorridos = 0;
+        let intervaloTimer = null;
+
+        function iniciarProva(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('aluno_nome').value.trim();
+            const turma = document.getElementById('aluno_turma').value.trim();
+            const email = document.getElementById('aluno_email').value.trim();
+
+            if (!nome || !turma || !email) {
+                alert('Por favor, preencha todos os campos obrigatórios para iniciar a avaliação.');
+                return;
+            }
+
+            const agora = new Date().toLocaleString('pt-BR');
+
+            // Atualiza barra de status superior
+            document.getElementById('badge-nome').textContent = nome;
+            document.getElementById('badge-turma').textContent = turma;
+            document.getElementById('badge-email').textContent = email;
+            document.getElementById('student-badge').style.display = 'block';
+
+            // Preenche os campos ocultos do formulário de envio por e-mail
+            document.getElementById('confirm-student-email').textContent = email;
+            document.getElementById('hidden_cc').value = email;
+            document.getElementById('hidden_nome').value = nome;
+            document.getElementById('hidden_turma').value = turma;
+            document.getElementById('hidden_email').value = email;
+            document.getElementById('hidden_inicio').value = agora;
+            document.getElementById('hidden_subject').value = `[Avaliação SENAI] ${nome} (${turma}) - Conjunto de Montar Anéis`;
+
+            // Alterna visibilidade das telas
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+
+            // Inicia cronômetro da prova
+            intervaloTimer = setInterval(() => {
+                segundosDecorridos++;
+                const h = String(Math.floor(segundosDecorridos / 3600)).padStart(2, '0');
+                const m = String(Math.floor((segundosDecorridos % 3600) / 60)).padStart(2, '0');
+                const s = String(segundosDecorridos % 60).padStart(2, '0');
+                const tempoFormatado = `${h}:${m}:${s}`;
+                document.getElementById('exam-timer').textContent = tempoFormatado;
+                document.getElementById('hidden_tempo').value = tempoFormatado;
+            }, 1000);
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function atualizarCardUpload(input, cardId, statusId) {
+            const card = document.getElementById(cardId);
+            const status = document.getElementById(statusId);
+
+            if (input.files && input.files.length > 0) {
+                const file = input.files[0];
+                const tamanhoKB = (file.size / 1024).toFixed(1);
+                card.classList.add('file-selected');
+                status.textContent = `✔ Arquivo selecionado: ${file.name} (${tamanhoKB} KB)`;
+            } else {
+                card.classList.remove('file-selected');
+                status.textContent = '';
+            }
+        }
+
+        function abrirZoom(src) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = src;
+            modal.style.display = 'flex';
+        }
+
+        function fecharZoom() {
+            document.getElementById('image-modal').style.display = 'none';
+        }
+
+        function validarEnvioFinal(event) {
+            const btn = document.getElementById('btn-submit-final');
+            btn.innerHTML = '<span>⏳ ENVIANDO ARQUIVOS... AGUARDE A CONFIRMAÇÃO</span>';
+            btn.style.opacity = '0.85';
+        }
+    </script>
+</body>
+</html>
